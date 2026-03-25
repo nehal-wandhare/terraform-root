@@ -1,5 +1,5 @@
 vpc_cidr       = "10.0.0.0/16"
-bucket_name    = "my-unique-tirri-bucket-12345"
+bucket_name    = "my-unique-tirri-wandhare-bucket-12345"
 db_class       = "db.t3.micro"
 db_user        = "admin"
 db_pass        = "admin123"
