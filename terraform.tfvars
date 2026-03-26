@@ -1,7 +1,7 @@
 # VPC
 vpc_cidr    = "10.0.0.0/16"
 subnet_cidr = "10.0.1.0/24"
-vpc_name    = "my-vpc"
+vpc_name    = "new-vpc"
 
 # SG
 sg_name = "my-sg"
@@ -18,7 +18,7 @@ key_name       = "your-keypair-name"
 instance_name  = "my-ec2"
 
 # S3
-bucket_name = "nehal-terraform-bucket-12345"
+bucket_name = "nehal-final-terraform-bucket-12345"
 
 # RDS
 db_class = "db.t3.micro"
