@@ -4,33 +4,42 @@ on:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      # 1. Checkout Code
+      - name: Checkout
         uses: actions/checkout@v4
 
+      # 2. Setup Terraform
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Configure AWS Credentials
+      # 3. Configure AWS Credentials
+      - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
+      # 4. Terraform Init
       - name: Terraform Init
         run: terraform init
 
+      # 5. Terraform Validate
       - name: Terraform Validate
         run: terraform validate
 
+      # 6. Terraform Plan
       - name: Terraform Plan
         run: terraform plan
 
+      # 7. Terraform Apply (only on main push)
       - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve
