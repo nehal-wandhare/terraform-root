@@ -42,7 +42,7 @@ module "ec2" {
 module "s3" {
   source = "git::https://github.com/nehal-wandhare/terraform-s3-module.git"
 
-  bucket_name = "khatrnak-newtirri-tirri-bucket"
+  bucket_name = "khatrnak-shounak-tirri-bucket"
   environment = var.environment
   versioning  = true
 }
