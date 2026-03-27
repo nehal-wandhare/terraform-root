@@ -34,17 +34,21 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      # 🔥 Workspace selection (VERY IMPORTANT)
+      # 🔥 Workspace selection
       - name: Select Workspace
         run: |
           terraform workspace select ${{ github.event.inputs.environment }} || terraform workspace new ${{ github.event.inputs.environment }}
 
+      # ✅ FIXED PLAN
       - name: Terraform Plan
-        run: terraform plan \
-          -var="environment=${{ github.event.inputs.environment }}" \
-          -var="instance_name=web"
+        run: |
+          terraform plan \
+            -var="environment=${{ github.event.inputs.environment }}" \
+            -var="instance_name=web"
 
+      # ✅ FIXED APPLY
       - name: Terraform Apply
-        run: terraform apply -auto-approve \
-          -var="environment=${{ github.event.inputs.environment }}" \
-          -var="instance_name=web"
+        run: |
+          terraform apply -auto-approve \
+            -var="environment=${{ github.event.inputs.environment }}" \
+            -var="instance_name=web"
