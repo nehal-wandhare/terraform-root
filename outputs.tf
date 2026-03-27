@@ -10,10 +10,6 @@ output "s3_bucket_id" {
   value = module.s3.bucket_id
 }
 
-output "rds_endpoint" {
-  value = module.rds.rds_endpoint
-}
-
 output "vpc_id" {
   value = module.vpc.vpc_id
 }
