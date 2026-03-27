@@ -2,52 +2,47 @@ provider "aws" {
   region = "ap-south-1"
 }
 
+# ---------------- VPC ----------------
 module "vpc" {
-  source = "git::https://github.com/nehal-wandhare/terraform-vpc-module.git?ref=main"
+  source = "git::https://github.com/nehal-wandhare/terraform-vpc-module.git"
 
-  cidr_block  = var.vpc_cidr
-  subnet_cidr = var.subnet_cidr
-  vpc_name    = var.vpc_name
-}
+  cidr_block  = "10.0.0.0/16"
+  subnet_cidr = "10.0.1.0/24"
+  vpc_name    = "main-vpc"
 
-module "sg" {
-  source = "git::https://github.com/nehal-wandhare/terraform-sg-module.git?ref=main"
-
-  vpc_id            = module.vpc.vpc_id
-  sg_name           = var.sg_name
-  environment       = var.environment
-  allowed_ssh_cidr  = var.allowed_ssh_cidr
-  allowed_http_cidr = var.allowed_http_cidr
-}
-
-module "s3" {
-  source = "git::https://github.com/nehal-wandhare/terraform-s3-module.git?ref=main"
-
-  bucket_name = var.bucket_name
   environment = var.environment
 }
 
-module "rds" {
-  source = "git::https://github.com/nehal-wandhare/terraform-rds-module.git?ref=main"
+# ---------------- SG ----------------
+module "sg" {
+  source = "git::https://github.com/nehal-wandhare/terraform-sg-module.git"
 
-  instance_class = var.db_class
-  username       = var.db_user
-  password       = var.db_pass
-  db_name        = var.db_name
-  environment    = var.environment
+  vpc_id            = module.vpc.vpc_id
+  sg_name           = "web-sg"
+  environment       = var.environment
+  allowed_ssh_cidr  = ["0.0.0.0/0"]
+  allowed_http_cidr = ["0.0.0.0/0"]
 }
 
+# ---------------- EC2 ----------------
 module "ec2" {
-  source = "git::https://github.com/nehal-wandhare/terraform-ec2-module.git?ref=main"
+  source = "git::https://github.com/nehal-wandhare/terraform-ec2-module.git"
 
-  ami                = var.ami
-  instance_type      = var.instance_type
+  environment        = var.environment
+  instance_name      = var.instance_name
+  ami                = "ami-0f58b397bc5c1f2e8"
+  instance_type      = "t2.micro"
   subnet_id          = module.vpc.subnet_id
-  key_name           = var.key_name
+  key_name           = "tirri"
   security_group_ids = [module.sg.sg_id]
   public_ip          = true
-  instance_name      = var.instance_name
-  environment        = var.environment
+}
 
-  depends_on = [module.sg]
+# ---------------- S3 ----------------
+module "s3" {
+  source = "git::https://github.com/nehal-wandhare/terraform-s3-module.git"
+
+  bucket_name = "khatrnak-tirri-bucket"
+  environment = var.environment
+  versioning  = true
 }
