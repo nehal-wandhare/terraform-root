@@ -31,7 +31,7 @@ module "ec2" {
   environment        = var.environment
   instance_name      = var.instance_name
   ami                = "ami-0f58b397bc5c1f2e8"
-  instance_type      = "t2.micro"
+  instance_type      = "t3.micro"
   subnet_id          = module.vpc.subnet_id
   key_name           = "tirri"
   security_group_ids = [module.sg.sg_id]
@@ -42,7 +42,7 @@ module "ec2" {
 module "s3" {
   source = "git::https://github.com/nehal-wandhare/terraform-s3-module.git"
 
-  bucket_name = "khatrnak-shounak-tirri-bucket"
+  bucket_name = "khatrnak-diksha-tirri-bucket"
   environment = var.environment
   versioning  = true
 }
