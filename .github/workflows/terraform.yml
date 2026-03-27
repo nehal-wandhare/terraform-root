@@ -6,6 +6,11 @@ on:
       environment:
         description: "Choose environment"
         required: true
+        type: choice
+        options:
+          - dev
+          - test
+          - prod
         default: "dev"
 
 jobs:
