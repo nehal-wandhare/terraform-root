@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket         = "khatrnak-newtirri-tirri-bucket"
+    bucket         = "dev-khatrnak-newtirri-tirri-bucket "
     key            = "terraform.tfstate"
     region         = "ap-south-1"
-    dynamodb_table = "otp-table"
+    use_lockfile   = true
   }
 }
